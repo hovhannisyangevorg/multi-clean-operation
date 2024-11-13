@@ -1,5 +1,6 @@
 #include <stdio.h>
+#include "../logger_system/logger_system.h"
 
 int main() {
-    printf("Hello My App");
+    logger(INFO,"Hello My App");
 }
