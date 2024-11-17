@@ -1,4 +1,6 @@
-#ifndef CLIENT_HANDLER_HPP
-#define CLIENT_HANDLER_HP
+#ifndef CLIENT_HANDLER_H
+#define CLIENT_HANDLER_H
 
-#endif //CLIENT_HANDLER_HPP
+void func();  // Declaration only
+
+#endif
