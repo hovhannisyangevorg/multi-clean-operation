@@ -43,14 +43,3 @@ const char* getCurrentTime() {
     strftime(time_buffer, sizeof(time_buffer), "%Y-%m-%d %H:%M:%S", tm_info);
     return time_buffer;
 }
-
-/**
-int main() {
-    logger(INFO, "This is an informational message.");
-    logger(WARN, "This is a warning message.");
-    logger(ERROR, "An error has occurred!");
-    logger(DEBUG, "Debugging information here.");
-    logger(FATAL, "A fatal error occurred.");
-    return 0;
-}
-*/
