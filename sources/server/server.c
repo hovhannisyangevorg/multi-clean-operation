@@ -3,5 +3,3 @@
 #include <stdio.h>
 
 void server() {}
-
-int main() { printf("hhhhhhhhhhhhhhh\n"); }

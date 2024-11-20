@@ -6,8 +6,8 @@ include $(ROOT_DIRECTORY)/build_scheme/module-flags.mk
 OBJECTS_DIRECTORY 			:= $(ROOT_DIRECTORY)/objects
 SOURCES_DIRECTORY 			:= $(ROOT_DIRECTORY)/sources/
 
-ALL_SERVER_LIBRARIES 		:= $(filter-out $(OBJ_DIR)/client/client.a $(OBJ_DIR)/entry-points/client/entry-points-client.a, $(shell find $(OBJECTS_DIRECTORY) -name "*.a" ))
-ALL_CLIENT_LIBRARIES		:= $(filter-out $(OBJ_DIR)/server/server.a $(OBJ_DIR)/entry-points/server/entry-points-server.a, $(shell find $(OBJECTS_DIRECTORY) -name "*.a" ))
+ALL_SERVER_LIBRARIES = $(filter-out $(OBJECTS_DIRECTORY)/client/client.a $(OBJECTS_DIRECTORY)/entry-points/client/entry-points-client.a, $(shell find $(OBJECTS_DIRECTORY) -name "*.a"))
+ALL_CLIENT_LIBRARIES = $(filter-out $(OBJECTS_DIRECTORY)/server/server.a $(OBJECTS_DIRECTORY)/entry-points/server/entry-points-server.a, $(shell find $(OBJECTS_DIRECTORY) -name "*.a"))
 
 ALL_HEADERS 				:= $(shell find $(ROOT_DIRECTORY)/sources -type d)
 ALL_HEADERS_FLAGS 			:= $(addprefix -I, $(ALL_HEADERS))

@@ -5,8 +5,3 @@
 void func() {
     utils();
 }
-//
-//
-int main() {
-    printf("hhhhhhhhhhhhhhh\n");
-}
