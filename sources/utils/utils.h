@@ -1,6 +1,7 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-void utils();
+char*   strjoin(char const* s1, char const* s2);
+
 
 #endif //UTILS_HPP

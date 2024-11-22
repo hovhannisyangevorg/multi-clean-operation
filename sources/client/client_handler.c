@@ -1,12 +1,14 @@
 #include "client_handler.h"
-#include "../utils/utils.h"
-#include <stdio.h>
 
-void func() {
-    utils();
+#include "load-config.h"
+
+t_config ConfigClient;
+
+void init() {
+    load_config(&ConfigClient);
+    print_config(ConfigClient);
 }
-//
-//
-int main() {
-    printf("hhhhhhhhhhhhhhh\n");
+
+void client_handler() {
+    init();
 }

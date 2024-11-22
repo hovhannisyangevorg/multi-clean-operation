@@ -23,3 +23,6 @@ void logger(t_level level, const char *message);
 const char* getCurrentTime();
 
 #endif //LOGER_HPP
+
+
+
