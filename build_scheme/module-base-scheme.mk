@@ -10,6 +10,7 @@ LIBRARY 	:= $(OBJECTS_DIR)/$(NAME)
 ALL_HEADERS 		:= $(shell find $(ROOT_DIRECTORY)/sources -type d)
 ALL_HEADERS_FLAGS 	:= $(addprefix -I, $(ALL_HEADERS))
 
+.DEFAULT_GOAL := all
 
 all: $(LIBRARY)
 
