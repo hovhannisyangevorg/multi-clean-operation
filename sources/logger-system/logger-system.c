@@ -1,4 +1,4 @@
-#include "logger_system.h"
+#include "logger-system.h"
 
 // Arrays for level names and colors
 static const char* level_names[] = {
@@ -8,7 +8,7 @@ static const char* level_names[] = {
 static const char* level_colors[] = {
     "\033[34m",  // TRACE - Blue
     "\033[32m",  // DEBUG - Green
-    "\033[37m",  // INFO - White
+    "\033[37m",  // INFO  - White
     "\033[33m",  // WARN - Yellow
     "\033[31m",  // ERROR - Red
     "\033[35m",  // FATAL - Magenta
