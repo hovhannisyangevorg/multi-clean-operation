@@ -1,5 +1,12 @@
 #include "server.h"
-#include "utils.h"
-#include <stdio.h>
 
-void server() {}
+t_config ConfigServer;
+
+static void init() {
+    load_config(&ConfigServer);
+    print_config(ConfigServer);
+}
+
+void server() {
+    init();
+}

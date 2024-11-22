@@ -5,6 +5,9 @@
 //#include <arpa/inet.h>
 #include "server.h"
 
+//static void init() {
+////    load_config();
+//}
 
 int main () {
     server();
