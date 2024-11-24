@@ -3,23 +3,27 @@
 #include <stdlib.h>
 
 
-char*   strjoin(char const* s1, char const* s2) {
-    size_t	i;
-    size_t	j;
-    char	*str;
 
-    if (!s1 || !s2)
-        return (0);
-    str = (char *)malloc(sizeof(*s1) * (strlen(s1) + strlen(s2) + 1));
-    if (!str)
-        return (0);
-    i = 0;
-    j = 0;
-    while (s1[i])
-        str[j++] = s1[i++];
-    i = 0;
-    while (s2[i])
-        str[j++] = s2[i++];
-    str[j] = '\0';
-    return (str);
+char	*strjoin(char *string1, const char *string2) {
+    char		*new_str    = NULL;
+    size_t		f_index     = 0;
+    size_t		s_index     = 0;
+
+    if (!string1 || !string2)
+        return NULL;
+
+    new_str = malloc(sizeof(char) * (strlen(string1) + strlen(string2) + 1));
+    if (!new_str)
+        return (NULL);
+
+    if (string1)
+        while (string1[f_index])
+            new_str[s_index++] = string1[f_index++];
+    f_index = 0;
+    if (string2)
+        while (string2[f_index])
+            new_str[s_index++] = string2[f_index++];
+    new_str[s_index] = '\0';
+    free(string1);
+    return (new_str);
 }
