@@ -5,7 +5,6 @@
 #include <dotenv.h>
 
 #include "logger-system.h"
-#include "panic.h"
 
 static void init() {
     logger(INFO, "Loading environment variables from the specified file ...");
@@ -15,6 +14,13 @@ static void init() {
         logger(ERROR, "loading .env file from ...");
         return ;
     }
+}
+
+void init_log(t_error_log* log) {
+    if (!log)
+        return;
+    log->log_server_path = NULL;
+    log->log_client_path = NULL;
 }
 
 void init_config(t_config* config) {
@@ -59,13 +65,13 @@ void load_config(t_config* config) {
 
     char* temporary_client = getEnvLocal("CLIENT_LOGS_FILE", NULL);
     if (temporary_client != NULL) {
-        config->log_path.log_cilent_path = "/var/log/multi-clean-operation/client-logs.log";
+        config->log_path.log_client_path = "/var/log/multi-clean-operation/client-logs.log";
     }
 }
 
 void print_config(t_config config) {
     printf("Host: %s%s", config.host, "\n");
     printf("Host: %d%s", config.port, "\n");
-    printf("ServerLogsPath: %s%s", config.log_path.log_server_path, "\n");
-    printf("ClientLogsPath: %s%s", config.log_path.log_cilent_path, "\n");
+    printf("Server Logs Path: %s%s", config.log_path.log_server_path, "\n");
+    printf("Client Logs Path: %s%s", config.log_path.log_client_path, "\n");
 }

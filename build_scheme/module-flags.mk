@@ -8,3 +8,6 @@ FOR_L						:= lib
 WL							:= -Wl
 LDFLAG_START 				:= $(WL),--start-group
 LDFLAG_END   				:= $(WL),--end-group
+
+
+#-g3 -fsanitize=address
