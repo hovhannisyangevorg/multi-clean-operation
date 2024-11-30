@@ -19,7 +19,7 @@ ALL_SERVER_HEADERS_DIR					= $(filter-out $(SOURCES_DIRECTORY)/client $(SOURCES_
 ALL_SERVER_HEADERS_DIRECTORY_FLAGS 		= $(addprefix -I, $(ALL_SERVER_HEADERS_DIR))
 ALL_SERVER_ARCHIVE_NAMES 				= $(patsubst lib%.a, %, $(notdir $(ALL_SERVER_LIBRARIES)))
 ALL_SERVER_ARCHIVE_NAMES_FLAGS			= $(addprefix -l, $(ALL_SERVER_ARCHIVE_NAMES))
-ALL_SERVER_ARCHIVE_NAMES_FLAGS			+= -ldotenv
+ALL_SERVER_ARCHIVE_NAMES_FLAGS			+= -ldotenv -lreadline
 
 ALL_CLIENT_LIBRARIES					= $(filter-out $(OBJECTS_DIRECTORY)/server/$(FOR_L)server.a $(OBJECTS_DIRECTORY)/entry-points/server/$(FOR_L)entry-points-server.a, $(shell find $(OBJECTS_DIRECTORY) -name "*.a"))
 ALL_CLIENT_OBJECTS 						= $(wildcard $(OBJECTS_DIRECTORY)/client/*.o) $(wildcard $(OBJECTS_DIRECTORY)/entry-points/client/*.o)
@@ -30,7 +30,7 @@ ALL_CLIENT_HEADERS_DIRECTORY_FLAGS		= $(addprefix -I, $(ALL_CLIENT_HEADERS_DIR))
 ALL_CLIENT_ARCHIVE_NAMES				= $(patsubst lib%.a, %, $(notdir $(ALL_CLIENT_LIBRARIES)))
 ALL_CLIENT_ARCHIVE_NAMES_FLAGS			= $(addprefix -l, $(ALL_CLIENT_ARCHIVE_NAMES))
 #------------------------------------------------------------------------------------------------------------------------
-ALL_CLIENT_ARCHIVE_NAMES_FLAGS 			+= -ldotenv
+ALL_CLIENT_ARCHIVE_NAMES_FLAGS 			+= -ldotenv -lreadline
 
 .DEFAULT_GOAL := all
 
