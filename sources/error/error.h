@@ -17,7 +17,7 @@ struct s_error {
     void*   value;
 };
 
-void        init_error(t_error* error);
+t_error*    init_error();
 char*       format(const char *format, const char *msg);
 t_error*    Set(t_error* error, char* new_error);
 

@@ -2,12 +2,15 @@
 #include "error.h"
 
 int main () {
-    t_error     Error;
-    init_error(&Error);
+    t_error*     Error = NULL;
 
-    if (server(&Error)->message) {
-       Set(&Error, format(__func__, ""));
-       logger(ERROR, Error.message);
+    Error = init_error();
+    if (!Error)
+        logger(ERROR, "Allocation failed.");
+
+    if (server(Error)->message) {
+       Set(Error, format(__func__, ""));
+       logger(ERROR, Error->message);
        return (EXIT_FAILURE);
     }
     return (EXIT_SUCCESS);

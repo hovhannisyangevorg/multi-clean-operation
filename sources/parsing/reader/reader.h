@@ -1,11 +1,9 @@
 #ifndef READER_HPP
 #define READER_HPP
 
+#include <readline/readline.h>
+#include "../../error/error.h"
 
-typedef struct s_reader t_reader;
-
-struct t_reader {
-
-};
+t_error*   reader(t_error* error);
 
 #endif //READER_HPP

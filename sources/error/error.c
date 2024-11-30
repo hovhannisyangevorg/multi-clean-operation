@@ -1,11 +1,14 @@
 #include "error.h"
 
-void init_error(t_error* error){
-    if (!error)
-        return ;
-    error->message = NULL;
-    error->value = NULL;
+t_error* init_error(){
+    t_error* Error;
+
+    Error = malloc(1 * sizeof(t_error));
+    if (Error == NULL)
+        return (NULL);
+    return (Error);
 }
+
 char	*format(const char *format, const char *msg) {
     char	*res;
 
