@@ -1,5 +1,5 @@
-#ifndef SERVER_HPP
-#define SERVER_HPP
+#ifndef SERVER_H
+#define SERVER_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +11,7 @@
 #include "logger-system.h"
 #include "load-config.h"
 #include "error.h"
+#include "../client_queue/client_queue.h"
 
 typedef struct s_server t_server;
 typedef struct sockaddr_in t_ip_socket;
@@ -23,4 +24,4 @@ struct s_server {
 
 t_error* server(t_error* error);
 
-#endif //SERVER_HPP
+#endif //SERVER_H

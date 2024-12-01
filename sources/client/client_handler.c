@@ -2,23 +2,10 @@
 
 t_config ConfigClient;
 
-
-char* message = "Hello, Server!";
-
-void init() {
+static void init() {
     logger(INFO, "Client Load Configuration started ...");
     init_config(&ConfigClient);
     load_config(&ConfigClient);
-}
-
-static t_error* init_client(t_error* Error) {
-    t_client * client_tmp = NULL;
-
-    client_tmp = (t_client *)calloc(1, sizeof(t_client ));
-    if (client_tmp == NULL) {
-        return (Set(Error, format(__func__, "(Memory allocation failed.)")));
-    }
-    return (Error->value = client_tmp, Error);
 }
 
 static t_error* create_socket(t_client* Client, t_error* Error) {
@@ -49,18 +36,29 @@ static t_error* connect_client(t_client* Client, t_error* Error) {
 
 static t_error* send_expression(t_client* Client, t_error* Error) {
     (void )Error;
-    send(Client->socket_fd, message, strlen(message), 0);
+    int mtu;
+    socklen_t len = sizeof(mtu);
+    if (getsockopt(Client->socket_fd, IPPROTO_IP, IP_MTU, &mtu, &len))
+        logger(TRACE, "FFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+//    logger(TRACE, "");
+//    printf("MTU of the network interface is: %d\n", mtu);
+
+//    send(Client->socket_fd, Client->expression, strlen(Client->expression), 0);
     return (Error);
 }
 
-t_error* client_handler(t_error* Error) {
+t_error* init_client(t_error* Error) {
+    t_client * client_tmp = NULL;
+
+    client_tmp = (t_client *)calloc(1, sizeof(t_client));
+    if (client_tmp == NULL) {
+        return (Set(Error, format(__func__, "(Memory allocation failed.)")));
+    }
+    return (Error->value = client_tmp, Error);
+}
+
+t_error* client_handler(t_client* Client, t_error* Error) {
     init();
-
-    t_client* Client;
-
-    if (init_client(Error)->message)
-        Set(Error, format(__func__, ""));
-    Client = Error->value;
 
     if (create_socket(Client, Error)->message)
         return (Set(Error, format(__func__, "")));

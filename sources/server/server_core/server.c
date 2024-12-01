@@ -1,4 +1,5 @@
 #include "server.h"
+#include <errno.h>
 
 t_config    ConfigServer;
 
@@ -52,17 +53,68 @@ static t_error* listen_server(t_server* Server, t_error* Error){
     return Error;
 }
 
+typedef struct sockaddr_in t_client_addr;
+
+// TODO: cheng socket fd in Q
 static t_error* accept_client(t_server* Server, t_error* Error) {
-    struct sockaddr_in client_addr;
-    socklen_t client_len = sizeof(client_addr);
     int new_socket_fd;
+    t_client_addr client_addr;
+    socklen_t client_len = sizeof(client_addr);
 
     new_socket_fd = accept(Server->socket_fd, (struct sockaddr*)&client_addr, &client_len);
     if (new_socket_fd < 0) {
         return (close(Server->socket_fd), Set(Error, format(__func__, "(Failed to accept client)")));
     }
+
+    printf("Client... (%d)", new_socket_fd);
     return Error;
 }
+
+//t_error* select_client(t_server* Server, t_error* Error) {
+
+//    struct sockaddr_in client_addr;
+//    socklen_t client_len = sizeof(client_addr);
+//    int new_socket_fd;
+//
+//    new_socket_fd = accept(Server->socket_fd, (struct sockaddr*)&client_addr, &client_len);
+//    if (new_socket_fd < 0) {
+//        return (close(Server->socket_fd), Set(Error, format(__func__, "(Failed to accept client)")));
+//    }
+
+//    int             max_fd;
+//    fd_set          readfds;
+//    t_client_queue* queue;
+//
+//    queue = init_client_queue();
+
+
+
+//    while (true) {
+//        FD_ZERO(&readfds);
+//        FD_SET(Server->socket_fd, &readfds);
+//        max_fd = Server->socket_fd;
+//
+//        t_node_queue* tmp = queue->front;
+//        while (tmp) {
+//            FD_SET(tmp->client_data.client_sfd, &readfds);
+//            if (max_fd < tmp->client_data.client_sfd)
+//                max_fd = tmp->client_data.client_sfd;
+//            tmp = tmp->next;
+//        }
+//
+//        int result = select(max_fd + 1, &readfds, NULL, NULL, NULL);
+//        if (result < 0 && errno != EINTR) {
+//            perror("Select error");
+//        }
+
+
+
+//        for_each(queue, handler);
+
+//    }
+
+//}
+
 
 t_error* server(t_error* Error) {
     logger(INFO, "Server started ...");
@@ -86,6 +138,10 @@ t_error* server(t_error* Error) {
     if (listen_server(Server, Error)->message) {
         return (Set(Error, format(__func__, "")));
     }
+//
+//    if (select_client(Server, Error)->message)
+//        return (Set(Error, format(__func__, "")));
+
 
     while (1) {
         logger(INFO, "Waiting for incoming connections...");

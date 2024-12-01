@@ -1,10 +1,10 @@
-#ifndef TOKENIZER_HPP
-#define TOKENIZER_HPP
+#ifndef TOKENIZER_H
+#define TOKENIZER_H
 
 typedef struct s_tokenizer t_tokenizer;
 
-struct t_tokenizer {
+struct s_tokenizer {
 
 };
 
-#endif //TOKENIZER_HPP
+#endif //TOKENIZER_H

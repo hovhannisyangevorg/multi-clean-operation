@@ -12,15 +12,25 @@
 #include "logger-system.h"
 #include "error.h"
 
+/**
+ * @struct s_client
+ * @brief Represents a client in a socket communication system.
+ * @var socket_fd
+ * @var server_addr
+ * @var expression
+ */
 typedef struct s_client     t_client;
 typedef struct sockaddr_in  t_ip_socket;
 typedef struct sockaddr     t_socket_address;
 
+
 struct s_client {
     int                 socket_fd;
     t_ip_socket         server_addr;
+    char                *expression;
 };
 
-t_error* client_handler(t_error* Error);
+t_error* client_handler(t_client* Client, t_error* Error);
+t_error* init_client(t_error* Error);
 
 #endif

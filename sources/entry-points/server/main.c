@@ -1,5 +1,4 @@
-#include "server.h"
-#include "error.h"
+#include "server/server_core/server.h"
 
 int main () {
     t_error*     Error = NULL;
