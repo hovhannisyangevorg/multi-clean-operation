@@ -2,11 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-static size_t	ft_err_strlen(const char *string) {
+size_t	err_strlen(const char *string) {
     size_t	index;
 
     index = 0;
-    if (!string)
+    if (string == NULL)
         return (0);
     while (string[index])
         ++index;
@@ -19,7 +19,7 @@ char	*strjoin(char *f_string, const char *s_string)
     size_t		f_index;
     size_t		s_index;
 
-    new_str = malloc(sizeof(char) * (ft_err_strlen(f_string) + ft_err_strlen(s_string) + 1));
+    new_str = malloc(sizeof(char) * (err_strlen(f_string) + err_strlen(s_string) + 1));
     if (!new_str)
         return (NULL);
     f_index = 0;
@@ -34,4 +34,37 @@ char	*strjoin(char *f_string, const char *s_string)
     new_str[s_index] = '\0';
     free(f_string);
     return (new_str);
+}
+
+static int nbrlen(int n) {
+    int i = 0;
+    if (n <= 0) // Account for the '-' sign or '0'
+        i++;
+    while (n) {
+        n /= 10;
+        ++i;
+    }
+    return i;
+}
+
+char *itoa(int n) {
+    int numlen = nbrlen(n);
+    char *str = (char *)malloc(sizeof(char) * (numlen + 1));
+    if (!str)
+        return NULL;
+
+    str[numlen] = '\0';
+    unsigned int num = (n < 0) ? -n : n; // Handle negatives safely
+
+    if (n < 0) {
+        str[0] = '-';
+    }
+    if (n == 0) {
+        str[0] = '0';
+    }
+    while (num) {
+        str[--numlen] = (num % 10) + '0';
+        num /= 10;
+    }
+    return str;
 }

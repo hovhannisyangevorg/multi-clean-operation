@@ -1,15 +1,17 @@
 #include "error.h"
 
-void init_error(t_error* error){
-    if (!error)
-        return ;
-    error->message = NULL;
-    error->value = NULL;
-}
-char	*format(const char *format, const char *msg) {
-    char	*res;
+t_error* init_error(){
+    t_error* Error;
 
-    res = NULL;
+    Error = (t_error*)calloc(1, sizeof(t_error));
+    if (Error == NULL)
+        return (NULL);
+    return (Error);
+}
+
+char	*format(const char *format, const char *msg) {
+    char*   res = NULL;
+
     res = strjoin(res, format);
     if (*res)
         res = strjoin(res, ": ");
@@ -28,5 +30,15 @@ t_error* Set(t_error* error, char* new_error) {
     error->message = NULL;
     error->message = string;
     return (error);
+}
+
+void clean_up_error(t_error** Error) {
+    if (Error && *Error){
+        if ((*Error)->message) {
+            free((*Error)->message);
+        }
+        free(*Error);
+        *Error = NULL;
+    }
 }
 
