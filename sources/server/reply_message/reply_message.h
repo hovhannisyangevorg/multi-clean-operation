@@ -1,5 +1,5 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef SERVER_RESPONSE_H
+#define SERVER_RESPONSE_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,15 +11,16 @@
 #include <sys/ioctl.h>
 #include <net/if.h>
 
-#include "./types.h"
 #include "../../error/error.h"
 #include "../../logger-system/logger-system.h"
 #include "../../load-config/load-config.h"
 #include "../../header/header.h"
-#include "../reply_message/reply_message.h"
+#include "../server_core/types.h"
+#include "calculator/calculator.h"
+#include "../../signals/signals.h"
+#include "../../calculator/calculator.h"
+#include "../send_response/send_response.h"
 
-t_error*    server(t_config* ConfigServer, t_server* Server, t_error* Error);
-t_error*    init_server(t_error* Error);
-void clean_up_server(t_server** Server);
+t_error* reply_message(t_server* Server, t_error* Error);
 
-#endif //SERVER_H
+#endif //SERVER_RESPONSE_H

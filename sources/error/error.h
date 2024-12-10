@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "utils.h"
+#include "../utils/utils.h"
 
 typedef struct s_error t_error;
 
@@ -20,5 +20,6 @@ struct s_error {
 t_error*    init_error();
 char*       format(const char *format, const char *msg);
 t_error*    Set(t_error* error, char* new_error);
+void        clean_up_error(t_error** Error);
 
 #endif //ERROR_H
