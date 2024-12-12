@@ -1,5 +1,5 @@
 CC 							:= gcc
-CFLAGS 						:= -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS 						:= -Wall -Wextra -Werror -g3
 MK							:= mkdir -p
 RM							:= rm -rf
 FOR_L						:= lib
