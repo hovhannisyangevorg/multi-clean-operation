@@ -1,5 +1,7 @@
 #include "tokenizer.h"
 
+#include "../vector/vector_core/vector_core.h"
+
 static bool is_valid(const char* expression) {
     const char* valid = "0123456789-+*/()\t ";
 
@@ -61,7 +63,6 @@ t_error* tokenizer_code(const char* expression, size_t size, t_error* Error) {
         return Set(Error, format(__func__, "(Memory allocation failed.)"));
     }
 
-
     size_t i = 0;
     while (expression && expression[i] && i < size) {
         if (isspace(expression[i])) {
@@ -71,13 +72,29 @@ t_error* tokenizer_code(const char* expression, size_t size, t_error* Error) {
         if (extract_number(expression, &i, Error)->message) {
             return Set(Error, format(__func__, ""));
         }
-        else if (Error->value){
-            push_back(Vector, (char *)Error->value);
+        else if (Error->value) {
+            t_data data;
+            data.token = (char *)Error->value;
+            data.size = err_strlen((char *)Error->value);
+            data.type = NUMBER;
+            push_back(Vector, data, Error);
+            if (Error->message) {
+                return Set(Error, format(__func__, ""));
+            }
             free((char*)Error->value);
             Error->value = NULL;
         }
         else {
-            push_back(Vector, duplicate_char(expression[i]));
+            t_data data;
+
+            data.token = duplicate_char(expression[i]);
+            data.size = err_strlen(data.token);
+            data.type = to_type(expression[i]);
+
+            push_back(Vector, data, Error);
+            if (Error->message) {
+                return Set(Error, format(__func__, ""));
+            }
             i++;
         }
     }

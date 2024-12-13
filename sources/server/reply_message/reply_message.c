@@ -66,7 +66,7 @@ void clean_up_body(t_header** Header, char** Buffer) {
     }
 }
 
-t_error* send_calculation(t_server* Server, t_header* Header, char* Buffer, t_error* Error) {
+t_error* send_calculation(t_server* Server, t_header* , char*, t_error* Error) { // Header, Buffer
     t_error* ParsError = NULL;
 
     ParsError = init_error();
@@ -74,7 +74,7 @@ t_error* send_calculation(t_server* Server, t_header* Header, char* Buffer, t_er
         return Set(Error, format(__func__, "(Parse Error initialize failed.)"));;
     }
 
-    ParsError = calculator(Buffer, Header, ParsError);
+//    ParsError = calculator(Buffer, Header, ParsError);
     if (ParsError->message) {
         Server->response = ParsError->message;
         if (send_response(Server, Error)->message) {

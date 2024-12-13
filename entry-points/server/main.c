@@ -43,6 +43,7 @@
 //}
 
 #include "calculator/tokenizer/tokenizer.h"
+#include "calculator/calculator_core/calculator.h"
 
 int main() {
     t_error*    Error = NULL;
@@ -51,7 +52,7 @@ int main() {
     if (!Error) {
         return logger(ERROR, "main: Allocation failed."), EXIT_FAILURE;
     }
-    char* expression = strdup("       *   -15255    -      5 ))) + 5 5          +-1 5 6   235 -7 12 +8");
+    char* expression = strdup("5+5");
     size_t size = strlen(expression);
 
     if (tokenizer_code(expression, size, Error)->message) {
@@ -59,13 +60,15 @@ int main() {
     }
     print_vector(Error->value);
 
+    calculator(Error->value, Error);
+
     return 0;
 }
 
 
 
-
-
+//
+//
 //#include <stdio.h>
 //#include <stdlib.h>
 //#include <string.h>
@@ -182,11 +185,11 @@ int main() {
 //    double final_result = atof(values->data[values->size - 1]);
 //    return final_result;
 //}
-
+//
 // Main function to parse the input expression and evaluate it
 //int main() {
 //    char* expression = "3 + (4 * 2) - 7 / 2";
-
+//
 //    t_vector* tokens = init_vector();
 //    // You need to implement tokenizing the input string into tokens (numbers, operators, parentheses).
 //    // Example tokens: ["3", "+", "(", "4", "*", "2", ")", "-", "7", "/", "2"]
@@ -203,7 +206,7 @@ int main() {
 //    push_back(tokens, "7");
 //    push_back(tokens, "/");
 //    push_back(tokens, "2");
-
+//
 //    t_error*    Error = NULL;
 //
 //    Error = init_error();
@@ -216,10 +219,10 @@ int main() {
 //    if (tokenizer_code(expression, size, Error)->message) {
 //        logger(ERROR, Error->message);
 //    }
-
+//
 //    double result = evaluate(Error->value);
 //    printf("Result: %lf\n", result);
-
+//
 //    free_vector(&Error->value);
 //    return 0;
 //}
