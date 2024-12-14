@@ -18,9 +18,9 @@ t_type to_type(char ch) {
     case '*':
         return OPER_MUL;
     case ')':
-        return LEFT_PAREN;
-    case '(':
         return RIGHT_PAREN;
+    case '(':
+        return LEFT_PAREN;
     default:
         return REGULAR;
     }

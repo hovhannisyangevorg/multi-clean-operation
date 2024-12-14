@@ -44,6 +44,7 @@
 
 #include "calculator/tokenizer/tokenizer.h"
 #include "calculator/calculator_core/calculator.h"
+#include "../../calculator/parse/parse.h"
 
 int main() {
     t_error*    Error = NULL;
@@ -52,13 +53,18 @@ int main() {
     if (!Error) {
         return logger(ERROR, "main: Allocation failed."), EXIT_FAILURE;
     }
-    char* expression = strdup("5+5");
+    char* expression = strdup("( (3 * 2) + (5 / 1) )");
     size_t size = strlen(expression);
 
     if (tokenizer_code(expression, size, Error)->message) {
         logger(ERROR, Error->message);
     }
-    print_vector(Error->value);
+    if (parse(Error->value, Error)->message) {
+        logger(ERROR, Error->message);
+    }
+
+//    pop_front(Error->value);
+//    print_vector(Error->value);
 
     calculator(Error->value, Error);
 

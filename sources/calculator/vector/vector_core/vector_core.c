@@ -29,7 +29,7 @@ static long resize_vector(t_vector* Vector) {
     return 0;
 }
 
-void push_back(t_vector* Vector, t_data data, t_error* Error) {
+void push_back(t_vector* Vector, t_data data) {
     if (!Vector)
         return ;
 
@@ -38,19 +38,10 @@ void push_back(t_vector* Vector, t_data data, t_error* Error) {
             return ;
     }
 
-    if (data.type == NUMBER) {
-        char* pEnd = NULL;
-        Vector->data[Vector->size].value = strtold(data.token, &pEnd);
-        if (!pEnd) {
-            Set(Error, format(__func__, "Invalid character in expression"));
-            return ;
-        }
-    }
-
     Vector->data[Vector->size].token = strdup(data.token);
     Vector->data[Vector->size].size = data.size;
     Vector->data[Vector->size].type = data.type;
-    Vector->data[Vector->size].value = 0;
+    Vector->data[Vector->size].value = data.value;
     ++Vector->size;
     return ;
 }
@@ -68,6 +59,7 @@ void push_front(t_vector* Vector, t_data data) {
     Vector->data[0].token = strdup(data.token);
     Vector->data[0].size = data.size;
     Vector->data[0].type = data.type;
+    Vector->data[Vector->size].value = data.value;
     Vector->size++;
 }
 
@@ -115,8 +107,8 @@ void print_vector(t_vector* Vector) {
     logger(TRACE, "Vector contents: ");
     printf("[ ");
     for (size_t i = 0; i < Vector->size; i++) {
-        printf("%s,  ", Vector->data[i].token);
-//        printf("\t Token: |%s|        |%s|\n", Vector->data[i].token, type_to_string(Vector->data[i].type));
+//        printf("%s,  ", Vector->data[i].token);
+        printf("\t Token: |%LF|        |%s|\n", Vector->data[i].value, type_to_string(Vector->data[i].type));
     }
     printf(" ]\n");
 

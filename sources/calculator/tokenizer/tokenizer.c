@@ -76,8 +76,18 @@ t_error* tokenizer_code(const char* expression, size_t size, t_error* Error) {
             t_data data;
             data.token = (char *)Error->value;
             data.size = err_strlen((char *)Error->value);
-            data.type = NUMBER;
-            push_back(Vector, data, Error);
+
+            if (data.token && data.token[0] != '\0' && !isdigit(data.token[0]) && isdigit(data.token[1])) {
+                data.type = NUMBER;
+            }
+            else if (isdigit(data.token[0]) && data.size == 1) {
+                data.type = NUMBER;
+            }
+            else {
+                data.type = to_type(data.token[0]);
+            }
+
+            push_back(Vector, data);
             if (Error->message) {
                 return Set(Error, format(__func__, ""));
             }
@@ -91,12 +101,14 @@ t_error* tokenizer_code(const char* expression, size_t size, t_error* Error) {
             data.size = err_strlen(data.token);
             data.type = to_type(expression[i]);
 
-            push_back(Vector, data, Error);
+            push_back(Vector, data);
             if (Error->message) {
                 return Set(Error, format(__func__, ""));
             }
             i++;
         }
     }
+
+//    print_vector(Vector);
     return Error->value = Vector, Error;
 }
