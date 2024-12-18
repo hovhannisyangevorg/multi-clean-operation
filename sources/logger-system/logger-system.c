@@ -1,6 +1,5 @@
 #include "logger-system.h"
 
-// Arrays for level names and colors
 static const char* level_names[] = {
     "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "OFF"
 };
@@ -15,12 +14,10 @@ static const char* level_colors[] = {
     "\033[0m"    // RESET - Default
 };
 
-// Log message with level and color
 void logger(t_level level, const char *message) {
     const char *level_name;
     const char *color;
 
-    // Map log level to name and color
     switch (level) {
     case TRACE: level_name = level_names[0]; color = level_colors[0]; break;
     case DEBUG: level_name = level_names[1]; color = level_colors[1]; break;
@@ -31,11 +28,9 @@ void logger(t_level level, const char *message) {
     case OFF:   level_name = level_names[6]; color = level_colors[6]; break;
     default:    level_name = "UNKNOWN";      color = level_colors[6]; break;
     }
-
     printf("%s[%s] [%s] %s\033[0m\n", color, getCurrentTime(), level_name, message);
 }
 
-// Get current time as a string
 const char* getCurrentTime() {
     static char time_buffer[20];
     time_t now = time(NULL);

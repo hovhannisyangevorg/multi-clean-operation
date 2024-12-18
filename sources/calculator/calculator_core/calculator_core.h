@@ -9,14 +9,6 @@
 #include "../../utils/utils.h"
 #include "../vector/vector_core/vector_core.h"
 
-//typedef struct s_tests t_tests;
-//
-//struct s_tests {
-//    char        *expression;
-//    long double expected;
-//}
-
-
 long double calculator_core(t_vector* tokens);
 
 #endif //CALCULATOR_CORE_H

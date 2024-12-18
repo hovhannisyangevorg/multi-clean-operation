@@ -15,14 +15,3 @@ t_error* parse(t_vector* Vector, t_error* Error) {
     }
     return Error;
 }
-
-//
-//void handle_negative(t_vector* Vector) {
-//    size_t i = 1;
-//
-//    while (i < Vector->size) {
-//
-//        ++i;
-//    }
-//
-//}

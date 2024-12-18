@@ -12,7 +12,7 @@ void signal_handler(int signo) {
 
 t_sigaction init_signal() {
     t_sigaction action;
-    action.sa_handler = signal_handler;  // Use the handler that sets stop_flag
+    action.sa_handler = signal_handler;
     sigemptyset(&action.sa_mask);
     action.sa_flags = 0;
     return action;

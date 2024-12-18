@@ -18,18 +18,6 @@ static long double do_operation(long double a, long double b, t_type op) {
     return b / a;
 }
 
-
-//static t_type has_operation(t_vector* Tokens, size_t index) {
-//    int i = index;
-//    while (--i != -1) {
-//        if (Tokens->data[i].type == LEFT_PAREN)
-//            return Tokens->data[index].type;
-//        if (Tokens->data[i].type == RIGHT_PAREN || Tokens->data[i].type == NUMBER)
-//            return UNKNOWN;
-//    }
-//    return Tokens->data[index].type;
-//}
-
 static void brace_calculation(t_vector* steak_operator, t_vector* steak_value) {
     while (steak_operator->size != 0 && steak_operator->data[0].type != LEFT_PAREN) {
         long double f_value;
@@ -191,5 +179,4 @@ long double calculator_core(t_vector* tokens) {
     free_vector(&steak_value);
     free_vector(&steak_operator);
     return result;
-//    return Error->value = itoa(round(result)), Error;
 }
