@@ -54,7 +54,7 @@ char *itoa(int n) {
         return NULL;
 
     str[numlen] = '\0';
-    unsigned int num = (n < 0) ? -n : n; // Handle negatives safely
+    unsigned int num = (n < 0) ? -n : n;
 
     if (n < 0) {
         str[0] = '-';

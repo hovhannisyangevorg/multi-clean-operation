@@ -69,38 +69,11 @@ t_error* validator(t_vector* Vector, t_error* Error) {
         if (end_brace != (size_t)(-1)) {
             size_t end_next     = end_brace + 1;
             size_t next_namber  = end_brace  + 2;
-//            printf("endnext: %lu\n", end_brace);
-//            printf("nextnamber: %lu\n", next_namber);
-
 
             if ((end_next < Vector->size && next_namber < Vector->size) && (is_operator(Vector->data[end_next].type) && Vector->data[next_namber].type != NUMBER && Vector->data[next_namber].type != LEFT_PAREN)) {
-//                printf("---------->: %s\n---------->: %s\n", type_to_string(Vector->data[next_namber].type), type_to_string(Vector->data[end_next].type));
                 return Set(Error, format(__func__, "(Missing number after operator.)"));
             }
         }
     }
     return Error;
 }
-
-//t_error* handle_negative(t_vector* Vector, t_error* Error) {
-//    size_t i = 1;
-//
-//    while (i < Vector->size) {
-//        t_type prev = Vector->data[i - 1].type;
-//        t_type midl = Vector->data[i].type;
-//        t_type next = Vector->data[i + 1].type;
-//
-//        if (is_operator(midl) && prev == RIGHT_PAREN)
-//        ++i;
-//    }
-//
-//
-//
-//    return Error;
-//}
-
-
-
-
-
-//  return Set(Error, format(__func__, "(Failed to calculate body length; 'expression' is empty or invalid.)"));

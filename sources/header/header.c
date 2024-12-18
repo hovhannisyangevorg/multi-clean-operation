@@ -10,6 +10,6 @@ t_header* init_header() {
 void clean_up_header(t_header** Header) {
     if (Header && *Header) {
         free(*Header);
-        *Header = NULL;  // Set the original pointer to NULL
+        *Header = NULL;
     }
 }
