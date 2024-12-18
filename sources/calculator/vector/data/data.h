@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct  s_data      t_data;
 typedef enum    s_type      t_type;
@@ -15,8 +16,7 @@ enum s_type {
     OPER_DIV    = 1 << 5,
     LEFT_PAREN  = 1 << 6,
     RIGHT_PAREN = 1 << 7,
-    REGULAR     = 1 << 8,
-    UNKNOWN     = 1 << 9
+    UNKNOWN     = 1 << 8
 };
 
 struct s_data {
@@ -27,9 +27,9 @@ struct s_data {
 };
 
 t_data* init_data();
-
-t_type to_type(char ch);
-char* type_to_string(t_type type);
-
-
+t_type  to_type(char ch);
+char*   type_to_string(t_type type);
+bool is_operator(t_type type);
+void clean_up_data(t_data* data);
+void free_data(t_data* data, size_t size);
 #endif //DATA_H

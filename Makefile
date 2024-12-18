@@ -23,7 +23,7 @@ ALL_SERVER_HEADERS_DIR					= $(filter-out $(SOURCES_DIRECTORY)/client $(ENTRY_PO
 ALL_SERVER_HEADERS_DIRECTORY_FLAGS 		= $(addprefix -I, $(ALL_SERVER_HEADERS_DIR))
 ALL_SERVER_ARCHIVE_NAMES 				= $(patsubst lib%.a, %, $(notdir $(ALL_SERVER_LIBRARIES)))
 ALL_SERVER_ARCHIVE_NAMES_FLAGS			= $(addprefix -l, $(ALL_SERVER_ARCHIVE_NAMES))
-ALL_SERVER_ARCHIVE_NAMES_FLAGS			+= -ldotenv -lreadline
+ALL_SERVER_ARCHIVE_NAMES_FLAGS			+= -ldotenv -lreadline -lm
 
 ALL_CLIENT_LIBRARIES					= $(filter-out $(OBJECTS_DIRECTORY)/server/$(FOR_L)server.a $(ENTRY_POINTS_SERVER_OBJECTS_DIR)/$(FOR_L)server.a, $(shell find $(OBJECTS_DIRECTORY) -name "*.a"))
 ALL_CLIENT_OBJECTS 						= $(wildcard $(OBJECTS_DIRECTORY)/client/*.o) $(wildcard $(ENTRY_POINTS_CLIENT_OBJECTS_DIR)/*.o)
@@ -34,7 +34,7 @@ ALL_CLIENT_HEADERS_DIRECTORY_FLAGS		= $(addprefix -I, $(ALL_CLIENT_HEADERS_DIR))
 ALL_CLIENT_ARCHIVE_NAMES				= $(patsubst lib%.a, %, $(notdir $(ALL_CLIENT_LIBRARIES)))
 ALL_CLIENT_ARCHIVE_NAMES_FLAGS			= $(addprefix -l, $(ALL_CLIENT_ARCHIVE_NAMES))
 #------------------------------------------------------------------------------------------------------------------------
-ALL_CLIENT_ARCHIVE_NAMES_FLAGS 			+= -ldotenv -lreadline
+ALL_CLIENT_ARCHIVE_NAMES_FLAGS 			+= -ldotenv -lreadline -lm
 
 .DEFAULT_GOAL := all
 
@@ -60,7 +60,7 @@ re:	fclean all
 
 server: all $(ALL_SERVER_LIBRARIES)
 	$(CC) $(CFLAGS) $(ALL_SERVER_HEADERS_DIRECTORY_FLAGS) -o $(SERVER_EXECUTION_FILE_NAME) $(ALL_SERVER_LIBRARIES_DIRECTORY_FLAGS) $(LDFLAG_START) $(ALL_SERVER_ARCHIVE_NAMES_FLAGS) $(LDFLAG_END)
-
+	@echo -t "\n\nRun Server execution file ...\n"; ./memcheck.sh
 client: all $(ALL_SERVER_LIBRARIES)
 	$(CC) $(CFLAGS) $(ALL_CLIENT_HEADERS_DIRECTORY_FLAGS) -o $(CLIENT_EXECUTION_FILE_NAME) $(ALL_CLIENT_LIBRARIES_LIBRARIES_FLAGS) $(LDFLAG_START) $(ALL_CLIENT_ARCHIVE_NAMES_FLAGS) $(LDFLAG_END)
 

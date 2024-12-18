@@ -7,5 +7,8 @@
 
 #include "../../error/error.h"
 #include "../vector/vector_core/vector_core.h"
+#include "../vector/data/data.h"
+
+t_error* validator(t_vector* Vector, t_error* Error);
 
 #endif //VALIDATION_H

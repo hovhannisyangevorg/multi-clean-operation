@@ -8,8 +8,9 @@ static t_error* make_header(t_server* Server, t_error* Error) {
         return Set(Error, format(__func__, "(Failed to initialize header.)"));
 
     Header->message_length = strlen(Server->response);
-    if (!Header->message_length)
+    if (!Header->message_length) {
         return Set(Error, format(__func__, "(Failed to calculate body length; 'expression' is empty or invalid.)"));
+    }
     return Error->value = Header, Error;
 }
 

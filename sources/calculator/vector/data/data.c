@@ -22,7 +22,7 @@ t_type to_type(char ch) {
     case '(':
         return LEFT_PAREN;
     default:
-        return REGULAR;
+        return UNKNOWN;
     }
 }
 
@@ -45,4 +45,34 @@ char* type_to_string(t_type type) {
     case UNKNOWN:return strdup("UNKNOWN");
     default:return strdup("REGULAR");
     }
+}
+
+#include <stdio.h>
+
+bool is_operator(t_type type) {
+    return type == OPER_MUL || type == OPER_SUB || type == OPER_ADD || type == OPER_DIV;
+}
+
+void clean_up_data(t_data* data) {
+    if (data == NULL) {
+        return;
+    }
+
+    if (data->token != NULL) {
+        free(data->token);
+        data->token = NULL;
+        data->size = 0;
+    }
+}
+
+
+void free_data(t_data* data, size_t size) {
+    if (data == NULL) {
+        return;
+    }
+
+    for (size_t i = 0; i < size; ++i) {
+        clean_up_data(&data[i]);
+    }
+    free(data);
 }

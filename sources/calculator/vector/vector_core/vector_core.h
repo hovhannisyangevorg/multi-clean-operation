@@ -18,7 +18,7 @@ struct s_vector {
 };
 
 t_vector* init_vector();
-void push_front(t_vector* Vector, t_data data);
+void push_front(t_vector* Vector, t_data* data);
 void push_back(t_vector* Vector, t_data data);
 void pop_back(t_vector* Vector);
 void pop_front(t_vector* Vector);

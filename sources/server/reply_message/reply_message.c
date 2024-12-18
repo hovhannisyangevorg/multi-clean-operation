@@ -66,15 +66,17 @@ void clean_up_body(t_header** Header, char** Buffer) {
     }
 }
 
-t_error* send_calculation(t_server* Server, t_header* , char*, t_error* Error) { // Header, Buffer
+#include "../../calculator/calculator_executor/calculator_executor.h"
+
+t_error* send_calculation(t_server* Server, t_header* Header, char* Buffer, t_error* Error) { // Header, Buffer
     t_error* ParsError = NULL;
 
     ParsError = init_error();
     if (!ParsError) {
-        return Set(Error, format(__func__, "(Parse Error initialize failed.)"));;
+        return Set(Error, format(__func__, "(Parse Error initialize failed.)"));
     }
 
-//    ParsError = calculator(Buffer, Header, ParsError);
+    ParsError = calculator_executor(Buffer, Header, ParsError);
     if (ParsError->message) {
         Server->response = ParsError->message;
         if (send_response(Server, Error)->message) {
@@ -83,6 +85,7 @@ t_error* send_calculation(t_server* Server, t_header* , char*, t_error* Error) {
             return Set(Error, format(__func__, ""));
         }
     } else {
+        logger(WARN, ParsError->value);
         Server->response = (char *)(*ParsError).value;
         if (send_response(Server, Error)->message) {
             free(Server->response);

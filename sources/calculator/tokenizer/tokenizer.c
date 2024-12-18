@@ -13,102 +13,94 @@ static bool is_valid(const char* expression) {
     return true;
 }
 
-char* duplicate_char(char ch) {
-    char* result = (char*)calloc(2, sizeof(char));
-    if (!result) {
+static void symbolize(t_vector* Vector) {
+    for (size_t i = 0; i < Vector->size; ++i) {
+        char ch = Vector->data[i].token[0];
+        Vector->data[i].type = to_type(ch);
+        if (Vector->data[i].type == UNKNOWN) {
+            Vector->data[i].type = NUMBER;
+        }
+    }
+}
+
+char* clone_substring(const char* start, const char* end) {
+    size_t length = end - start;
+
+    char* clone = (char*)malloc(length + 1);
+    if (!clone) {
         return NULL;
     }
-    result[0] = ch;
-    result[1] = '\0';
-    return result;
+    strncpy(clone, start, length);
+    clone[length] = '\0';
+    return clone;
 }
-
-t_error* extract_number(const char* expression, size_t* index, t_error* Error) {
-    size_t i            = *index;
-    size_t token_len    = 0;
-
-    if (expression[i] == '+' || expression[i] == '-') {
-        ++token_len;
-        i++;
-    }
-
-    char* token = NULL;
-
-    size_t token_index = i;
-    while (isdigit(expression[token_index])) {
-        token_len++;
-        token_index++;
-    }
-
-    if (token_len > 0) {
-        token = (char*)calloc(token_len + 1, sizeof(char));
-        if (!token) {
-            return Set(Error, format(__func__, "Invalid character in expression"));
-        }
-        strncpy(token, expression + i - (expression[i - 1] == '+' || expression[i - 1] == '-' ? 1 : 0), token_len);
-        token[token_len] = '\0';
-    }
-    *index += token_len;
-    return Error->value = token, Error;
-}
-
-
 
 t_error* tokenizer_code(const char* expression, size_t size, t_error* Error) {
+    const char* delimiters = "-+*/()\t ";
+
     if (!is_valid(expression))
         return Set(Error, format(__func__, "Invalid character in expression"));
 
-    t_vector* Vector = init_vector();
+    t_vector *Vector = init_vector();
     if (!Vector) {
         return Set(Error, format(__func__, "(Memory allocation failed.)"));
     }
 
-    size_t i = 0;
-    while (expression && expression[i] && i < size) {
-        if (isspace(expression[i])) {
-            i++;
-            continue;
-        }
-        if (extract_number(expression, &i, Error)->message) {
-            return Set(Error, format(__func__, ""));
-        }
-        else if (Error->value) {
-            t_data data;
-            data.token = (char *)Error->value;
-            data.size = err_strlen((char *)Error->value);
+    const char *start = expression;
+    const char *end = expression;
 
-            if (data.token && data.token[0] != '\0' && !isdigit(data.token[0]) && isdigit(data.token[1])) {
-                data.type = NUMBER;
+    while ((size_t) (start - expression) < size) {
+
+        while ((size_t)(start - expression) < size && strchr(delimiters, *start) != NULL) {
+            if (isspace(*start)) {
+                start++;
+                continue;
             }
-            else if (isdigit(data.token[0]) && data.size == 1) {
-                data.type = NUMBER;
+            char *token = clone_substring(start, start + 1);
+            if (!token) {
+                free_vector(&Vector);
+                return Set(Error, format(__func__, "(Memory allocation failed.)"));
             }
-            else {
-                data.type = to_type(data.token[0]);
-            }
+
+            t_data data = {
+                .token = token,
+                .size = err_strlen(token),
+                .type = UNKNOWN,
+                .value = 0
+            };
 
             push_back(Vector, data);
-            if (Error->message) {
-                return Set(Error, format(__func__, ""));
+            free(token);
+            start++;
+        }
+
+        end = start;
+        while ((size_t) (end - expression) < size && strchr(delimiters, *end) == NULL) {
+            end++;
+        }
+
+        if (start < end) {
+            char *token = clone_substring(start, end);
+            if (!token) {
+                free_vector(&Vector);
+                return Set(Error, format(__func__, "(Memory allocation failed.)"));
             }
-            free((char*)Error->value);
-            Error->value = NULL;
+            t_data data = {
+                .token = token,
+                .size = err_strlen(token),
+                .type = UNKNOWN,
+                .value = 0
+            };
+
+            push_back(Vector, data);
+            free(token);
+            start = end;
         }
         else {
-            t_data data;
-
-            data.token = duplicate_char(expression[i]);
-            data.size = err_strlen(data.token);
-            data.type = to_type(expression[i]);
-
-            push_back(Vector, data);
-            if (Error->message) {
-                return Set(Error, format(__func__, ""));
-            }
-            i++;
+            start++;
         }
     }
 
-//    print_vector(Vector);
+    symbolize(Vector);
     return Error->value = Vector, Error;
 }

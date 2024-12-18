@@ -14,19 +14,28 @@ t_vector* init_vector() {
 
 static size_t calculate_capacity(t_vector* Vector) {
     if (Vector->capacity == 0)
-        return 2;
+        return 7;
     return (Vector->capacity * 2);
 }
 
-static long resize_vector(t_vector* Vector) {
+static bool resize_vector(t_vector* Vector) {
     size_t new_capacity = calculate_capacity(Vector);
-    t_data* new_data = (t_data*)realloc(Vector->data, new_capacity * sizeof(t_data));
+
+    t_data* new_data = (t_data*)calloc(new_capacity, sizeof(t_data));
     if (!new_data) {
-        return -1;
+        return false;
     }
+    for (size_t i = 0; i < Vector->size; ++i) {
+        new_data[i].type    = Vector->data[i].type;
+        new_data[i].value   = Vector->data[i].value;
+        new_data[i].token   = Vector->data[i].token;
+        new_data[i].size    = Vector->data[i].size;
+    }
+
+    free(Vector->data);
     Vector->data = new_data;
     Vector->capacity = new_capacity;
-    return 0;
+    return true;
 }
 
 void push_back(t_vector* Vector, t_data data) {
@@ -34,32 +43,58 @@ void push_back(t_vector* Vector, t_data data) {
         return ;
 
     if (Vector->size == Vector->capacity) {
-        if (resize_vector(Vector) == -1)
+        if (!resize_vector(Vector))
             return ;
     }
 
     Vector->data[Vector->size].token = strdup(data.token);
-    Vector->data[Vector->size].size = data.size;
+    Vector->data[Vector->size].size = strlen(data.token);
     Vector->data[Vector->size].type = data.type;
     Vector->data[Vector->size].value = data.value;
     ++Vector->size;
     return ;
 }
 
-void push_front(t_vector* Vector, t_data data) {
-    if (!Vector)
+static t_data* copy_data(t_vector* Vector, size_t start, size_t end) {
+    size_t i = start;
+    size_t j = 0;
+
+    t_data* new_data = (t_data*)calloc(Vector->capacity,sizeof(t_data));
+    if (!new_data) {
+        return NULL;
+    }
+
+    while (j < end) {
+        new_data[i].token   = strdup(Vector->data[j].token);
+        new_data[i].value   = Vector->data[j].value;
+        new_data[i].size    = strlen(Vector->data[j].token);
+        new_data[i].type    = Vector->data[j].type;
+        ++i, ++j, ++start;
+    }
+    return new_data;
+}
+
+void  push_front(t_vector* Vector, t_data* data) {
+    if (!Vector || !data)
         return;
 
     if (Vector->size == Vector->capacity) {
-        if (resize_vector(Vector) == -1)
+        if (!resize_vector(Vector))
             return ;
     }
 
-    memmove(&Vector->data[1], &Vector->data[0], Vector->size * sizeof(t_data));
-    Vector->data[0].token = strdup(data.token);
-    Vector->data[0].size = data.size;
-    Vector->data[0].type = data.type;
-    Vector->data[Vector->size].value = data.value;
+    t_data* new_data = NULL;
+    new_data = copy_data(Vector, 1, Vector->size);
+    if (!new_data) {
+        return;
+    }
+
+    free_data(Vector->data, Vector->size);
+    Vector->data = new_data;
+    Vector->data[0].token   = strdup(data->token);
+    Vector->data[0].value   = data->value;
+    Vector->data[0].type    = data->type;
+    Vector->data[0].size    = strlen(data->token);
     Vector->size++;
 }
 
@@ -85,13 +120,13 @@ void pop_front(t_vector* Vector) {
 }
 
 void free_vector(t_vector** Vector) {
-    if (!Vector)
+    if (!Vector || !*Vector)
         return ;
 
     for (size_t i = 0; i < (*Vector)->size; i++) {
-        free((*Vector)->data[i].token);
-        (*Vector)->data[i].size = 0;
-        (*Vector)->data[i].type = UNKNOWN;
+        if ((*Vector)->data) {
+            clean_up_data(&(*Vector)->data[i]);
+        }
     }
 
     free((*Vector)->data);
@@ -105,11 +140,11 @@ void print_vector(t_vector* Vector) {
     }
 
     logger(TRACE, "Vector contents: ");
-    printf("[ ");
+    printf("\n\n[\n\n");
     for (size_t i = 0; i < Vector->size; i++) {
-//        printf("%s,  ", Vector->data[i].token);
-        printf("\t Token: |%LF|        |%s|\n", Vector->data[i].value, type_to_string(Vector->data[i].type));
+        printf("%s,  ", Vector->data[i].token);
+//        printf("\t Token: |%LF|        |%s|\n", Vector->data[i].value, type_to_string(Vector->data[i].type));
     }
-    printf(" ]\n");
+    printf("\n\n]\n\n");
 
 }
